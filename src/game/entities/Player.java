@@ -17,7 +17,7 @@ public class Player extends Camera {
 		super((float) PI * 0.25f, 0.01f, 9e9f, window);
 	}
 	
-	public void updateMovement(EnigWindow window, float timeStep) {
+	public void updateMovement(EnigWindow window, float timeStep, float height) {
 		Vector2f movement = new Vector2f();
 		if (UserControls.forward(window)) {
 			movement.add(getRotated2DVector(0f, -1f, 1f));
@@ -31,8 +31,8 @@ public class Player extends Camera {
 		if (UserControls.right(window)) {
 			movement.add(getRotated2DVector(1f, 0f, 1f));
 		}
-		if (UserControls.up(window) && y < 0.01f) {
-			velocity.add(0, 5, 0);
+		if (UserControls.up(window) && y < height + 0.01f) {
+			velocity.add(0, 7, 0);
 		}
 		if(movement.lengthSquared() > 0.2f) {
 			movement.normalize(2*timeStep);
@@ -41,8 +41,8 @@ public class Player extends Camera {
 		}
 		add(velocity.mul(timeStep, new Vector3f()));
 		velocity.y -= 0.4f;
-		if (y <= 0) {
-			y = 0;
+		if (y <= height) {
+			y = height;
 			velocity.y = 0;
 		}
 	}

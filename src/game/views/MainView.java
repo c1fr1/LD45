@@ -55,7 +55,7 @@ public class MainView extends EnigView {
 	public void manageScene() {
 		totalTime += deltaTime;
 		player.updateRotation(window, deltaTime);
-		player.updateMovement(window, deltaTime);
+		player.updateMovement(window, deltaTime, getHeight(player.x, player.z));
 
 		if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
 			addSupport();
@@ -91,6 +91,7 @@ public class MainView extends EnigView {
 	}
 
 	public boolean barExists(int fromX, int fromZ, int toX, int toZ) {
+		System.out.println(fromX + " " + fromZ + " " + toX + " " + toZ);
 		for (int i = 0; i < supports.size(); ++i) {
 			Support s = supports.get(i);
 			if (fromX == s.fromX && fromZ == s.fromZ && toX == s.toX && toZ == s.toZ) {
@@ -104,20 +105,34 @@ public class MainView extends EnigView {
 	}
 
 	public float getHeight(float x, float z) {
+		float supportRadius = 0.2f;
+		float supportDiameter = 0.4f;
+
 		float ret = -100;
-		float relX = x + 0.2f % 1f;
-		float relZ = z + 0.2f % 1f;
+		float relX = (x + supportRadius) % 3f;
+		float relZ = (z + supportRadius) % 3f;
 		if (relX < 0) {
-			relX += 1f;
+			relX += 3f;
 		}
 		if (relZ < 0) {
-			relZ += 1f;
+			relZ += 3f;
 		}
-		if (relX < 0.4f) {
-			if (ret > 0.1)
+		if (relX < supportDiameter) {
+			if (barExists((int) Math.round(x / 3), (int) Math.floor(z / 3), (int) Math.round(x / 3), (int) Math.ceil(z / 3))) {
+				ret = (float) Math.sqrt(1f - ((relX - supportRadius) * (relX - supportRadius)) * 5f) * supportRadius - supportRadius;
+			}
 		}
-		if (relZ < 0.4f) {
-
+		if (relZ < supportDiameter) {
+			if (barExists((int) Math.floor(x / 3), (int) Math.round(z / 3), (int) Math.ceil(x / 3), (int) Math.round(z / 3))) {
+				float tret = (float) Math.sqrt(1f - ((relZ - supportRadius) * (relZ - supportRadius)) * 5f) * supportRadius - supportRadius;
+				if (tret > ret) {
+					ret = tret;
+				}
+			}
 		}
+		if (x * x + z * z < 1) {
+			ret = 0;
+		}
+		return ret;
 	}
 }

@@ -30,7 +30,7 @@ public class Support {
 			toZ = fromZ + 1;
 		} else {
 			toX = fromX - 1;
-			toZ = fromZ - 1;
+			toZ = fromZ;
 		}
 	}
 
