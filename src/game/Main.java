@@ -3,6 +3,7 @@ package game;
 import engine.OpenAL.SoundSource;
 import engine.OpenGL.EnigWindow;
 import engine.OpenGL.VAO;
+import game.structures.Plate;
 import game.structures.Support;
 import game.views.MainView;
 import org.joml.Matrix4f;
@@ -57,5 +58,6 @@ public class Main {
 		Shaders.createMainShaders();
 		screenObj = new VAO(-1, -1, 2, 2);
 		Support.loadRes();
+		Plate.loadRes();
 	}
 }

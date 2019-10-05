@@ -10,7 +10,7 @@ public class UserControls {
 	public static int[] left = new int[] {GLFW_KEY_A};
 	public static int[] right = new int[] {GLFW_KEY_D};
 	public static int[] up = new int[] {GLFW_KEY_SPACE};
-	public static int[] down = new int[] {GLFW_KEY_LEFT_SHIFT};
+	public static int[] build = new int[] {GLFW_KEY_B};
 	public static int[] seeAsteroids = new int[] {GLFW_KEY_E};
 	public static int[] quit = new int[] {GLFW_KEY_ESCAPE};
 	public static int[] matchVelocity = new int[] {GLFW_KEY_Q};
@@ -57,9 +57,9 @@ public class UserControls {
 		}
 		return false;
 	}
-	public static boolean down(EnigWindow window) {
-		for (int i:down) {
-			if (window.keys[i] > 0) {
+	public static boolean build(EnigWindow window) {
+		for (int i:build) {
+			if (window.keys[i] == 1) {
 				return true;
 			}
 		}

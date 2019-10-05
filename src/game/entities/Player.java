@@ -51,12 +51,6 @@ public class Player extends Camera {
 		return new Ray3f(this, getRotatedVector(0, 0, -1f, 1f));
 	}
 	
-	public void applyMovement(Vector3f acceleration, float timeStep) {
-		add(velocity.mul(timeStep, new Vector3f()));
-		add(acceleration.mul(0.5f * timeStep * timeStep, new Vector3f()));
-		velocity.add(acceleration.mul(timeStep, new Vector3f()));
-	}
-	
 	public void updateRotation(EnigWindow window, float timeStep) {
 		yaw(timeStep * -(float) window.cursorXOffset / 10f);
 		pitch(timeStep * -(float) window.cursorYOffset / 10f);
