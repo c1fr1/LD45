@@ -185,8 +185,8 @@ public class MainView extends EnigView {
 		if (x * x + z * z < 1) {
 			ret = 0;
 		}
-
-		if (plateExists((int) Math.floor((player.x) / 3f), (int) Math.floor((player.y) / 3f))) {
+		
+		if (plateExists((int) Math.floor((player.x) / 3f), (int) Math.floor((player.z) / 3f))) {
 			if (ret < -0.2f) {
 				ret = -0.2f;
 			}
