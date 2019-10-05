@@ -1,0 +1,41 @@
+/*TODO
+
+stats (out of 5)
++ coolness
+- importance
+! needed for next product (B)
+
+
+ - Completely organize the code                                         |+--            |
+ - UI elements                                                          |CAT            |
+    = Current weapon                                                    |+---!          !!
+ - Tutorial                                                             |+--            |
+ - redo rendering floor and lights                                      |---            |
+ - loot                                                                 |CAT            |
+    = Weapons                                                           |CATT           |
+        + Spear                                                         |+++++---!      !!
+    = Scrolls                                                           |CATT           |
+        + Slab                                                          |+++++-----!    !!
+        + Reign                                                         |+++++          |
+        + Club                                                          |+++----!       !!
+        + Shield                                                        |++++-          |
+        + Heal                                                          |----!          |
+    = Storage (gems/crystals?)                                          |+---           |
+ - sound                                                                |CAT            |
+    = port old wraith noises                                            |+++--          |
+    = add new sounds for new attack(s)                                  |+--            |
+    = find someone to do music or do something else                     |---            |
+ - visualize attacks                                                    |----!          !!
+ */
+ /*
+
+product B
+ - spear
+ - slab
+ - club
+ - visualize attacks
+
+reign
+redo floor
+
+ */
