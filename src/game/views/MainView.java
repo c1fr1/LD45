@@ -84,8 +84,8 @@ public class MainView extends EnigView {
 	public void renderScene() {
 		FBO.prepareDefaultRender();
 		renderIsland();
-		renderStructures();
 		renderPreviews();
+		renderStructures();
 	}
 
 	public void renderIsland() {
@@ -128,7 +128,9 @@ public class MainView extends EnigView {
 	public void addPlate() {
 		Plate plate = new Plate(player);
 		if (!plateExists(plate.posX, plate.posZ)) {
-			plates.add(plate);
+			if (plateCanBeSupported(plate.posX, plate.posZ)) {
+				plates.add(plate);
+			}
 		}
 	}
 
@@ -149,6 +151,78 @@ public class MainView extends EnigView {
 				return true;
 			}
 			if (fromX == s.toX && fromZ == s.toZ && toX == s.fromX && toZ == s.fromZ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean plateCanBeSupported(int x, int z) {
+		int numNextTo = 0;
+		for (int i = 0; i < supports.size(); ++i) {
+			if (numNextTo == 2) {
+				return true;
+			}
+			Support s = supports.get(i);
+			if (s.fromX == x && s.fromZ == z && s.toX == x + 1 && s.toZ == z) {
+				++numNextTo;
+				continue;
+			}
+			if (s.toX == x && s.toZ == z && s.fromX == x + 1 && s.fromZ == z) {
+				++numNextTo;
+				continue;
+			}
+			if (s.fromX == x && s.fromZ == z && s.toX == x && s.toZ == z + 1) {
+				++numNextTo;
+				continue;
+			}
+			if (s.toX == x && s.toZ == z && s.fromX == x && s.fromZ == z + 1) {
+				++numNextTo;
+				continue;
+			}
+			if (s.fromX == x + 1 && s.fromZ == z && s.toX == x + 1 && s.toZ == z + 1) {
+				++numNextTo;
+				continue;
+			}
+			if (s.toX == x + 1 && s.toZ == z && s.fromX == x + 1 && s.fromZ == z + 1) {
+				++numNextTo;
+				continue;
+			}
+			if (s.fromX == x && s.fromZ == z + 1 && s.toX == x + 1 && s.toZ == z + 1) {
+				++numNextTo;
+				continue;
+			}
+			if (s.toX == x && s.toZ == z + 1 && s.fromX == x + 1 && s.fromZ == z + 1) {
+				++numNextTo;
+				continue;
+			}
+		}
+		if (numNextTo >= 2) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean supportCanBeSupported(int x0, int z0, int x1, int z1) {
+		if (x0 == 0 && z0 == 0) {
+			return true;
+		}
+		if (x1 == 0 && z1 == 0) {
+			return true;
+		}
+		for (int i = 0; i < supports.size(); ++i) {
+			Support s = supports.get(i);
+			if (s.fromX == x0 && s.fromZ == z0) {
+				return true;
+			}
+			if (s.fromX == x1  && s.fromZ == z1) {
+				return true;
+			}
+			if (s.toX == x0 && s.toZ == z0) {
+				return true;
+			}
+			if (s.toX == x1  && s.toZ == z1) {
 				return true;
 			}
 		}
@@ -185,7 +259,7 @@ public class MainView extends EnigView {
 		if (x * x + z * z < 1) {
 			ret = 0;
 		}
-		
+
 		if (plateExists((int) Math.floor((player.x) / 3f), (int) Math.floor((player.z) / 3f))) {
 			if (ret < -0.2f) {
 				ret = -0.2f;

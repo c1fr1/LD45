@@ -4,6 +4,7 @@ import engine.Entities.Camera;
 import engine.OpenGL.EnigWindow;
 import engine.Platform.Ray3f;
 import game.UserControls;
+import game.views.MainView;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -32,16 +33,22 @@ public class Player extends Camera {
 			movement.add(getRotated2DVector(1f, 0f, 1f));
 		}
 		if (UserControls.up(window) && y < height + 0.01f) {
-			velocity.add(0, 7, 0);
+			velocity.add(0, 6, 0);
 		}
+
+		float speed = 2;
+		if (UserControls.sprint(window)) {
+			speed *= 3;
+		}
+
 		if(movement.lengthSquared() > 0.2f) {
-			movement.normalize(2*timeStep);
+			movement.normalize(speed * timeStep);
 			x += movement.x;
 			z += movement.y;
 		}
 		add(velocity.mul(timeStep, new Vector3f()));
-		velocity.y -= 0.4f;
-		if (y <= height) {
+		velocity.y -= 0.3f;
+		if (y <= height && height - y < -(velocity.y + 0.2f) * timeStep) {
 			y = height;
 			velocity.y = 0;
 		}

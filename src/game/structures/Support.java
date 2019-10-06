@@ -3,6 +3,7 @@ package game.structures;
 import engine.OpenGL.VAO;
 import game.Shaders;
 import game.entities.Player;
+import game.views.MainView;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -51,7 +52,12 @@ public class Support {
 	public static void renderPreview(Player player) {
 		Matrix4f cam = player.getCameraMatrix();
 		int dir = player.getDirection();
-		Shaders.colorShader.setUniform(2, 0, new Vector3f(0f, 1f, 1f));
+		Support s = new Support(player);
+		if (MainView.main.supportCanBeSupported(s.fromX, s.fromZ, s.toX, s.toZ)) {
+			Shaders.colorShader.setUniform(2, 0, new Vector3f(0f, 1f, 1f));
+		} else {
+			Shaders.colorShader.setUniform(2, 0, new Vector3f(1f, 0f, 0f));
+		}
 		if (dir == 0) {
 			Shaders.colorShader.setUniform(0, 0, cam.translate(player.getXPos() * 3f, -0.2f, player.getZPos() * 3f).rotateX((float) -Math.PI / 2f).scale(1, 3, 1));
 		} else if (dir == 2) {

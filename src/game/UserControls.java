@@ -11,9 +11,8 @@ public class UserControls {
 	public static int[] right = new int[] {GLFW_KEY_D};
 	public static int[] up = new int[] {GLFW_KEY_SPACE};
 	public static int[] build = new int[] {GLFW_KEY_B};
-	public static int[] seeAsteroids = new int[] {GLFW_KEY_E};
+	public static int[] sprint = new int[] {GLFW_KEY_LEFT_SHIFT, GLFW_KEY_RIGHT_SHIFT};
 	public static int[] quit = new int[] {GLFW_KEY_ESCAPE};
-	public static int[] matchVelocity = new int[] {GLFW_KEY_Q};
 	
 	public static float sensitivity = 1f/500f;
 	
@@ -65,16 +64,8 @@ public class UserControls {
 		}
 		return false;
 	}
-	public static boolean matchVelocity(EnigWindow window) {
-		for (int i: matchVelocity) {
-			if (window.keys[i] == 1) {
-				return true;
-			}
-		}
-		return false;
-	}
-	public static boolean seeAsteroids(EnigWindow window) {
-		for (int i: seeAsteroids) {
+	public static boolean sprint(EnigWindow window) {
+		for (int i: sprint) {
 			if (window.keys[i] > 0) {
 				return true;
 			}
