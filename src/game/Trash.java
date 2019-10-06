@@ -16,14 +16,14 @@ public class Trash extends Vector3f {
 	private Vector3f velocity;
 
 	private static VAO trashVAO;
-	private static Texture noiseTexture;
+	public static Texture noiseTexture;
 
 
 	public Trash(Vector3f target, float radius) {
 		Vector3f targetPosition = new Vector3f((float) Math.random() * radius * 2 - 1, (float)Math.random() * radius * 2 - 1, (float)Math.random() * radius * 2 - 1);
-		x = 51;
+		x = 55 - MainView.main.raftPosition.x;
 		y = 42;
-		z = 11.828f;
+		z = 0f - MainView.main.raftPosition.z;
 		while (targetPosition.lengthSquared() > radius * radius) {
 			targetPosition = new Vector3f((float) Math.random() * radius * 2 - 1, (float)Math.random() * radius * 2 - 1, (float)Math.random() * radius * 2 - 1);
 		}
@@ -41,6 +41,7 @@ public class Trash extends Vector3f {
 			velocity.y *= -0.5;
 			velocity.x *= 0.9f;
 			velocity.z *= 0.9f;
+			MainView.main.impact(x, z);
 			y = height;
 		}
 	}

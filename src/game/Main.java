@@ -3,6 +3,7 @@ package game;
 import engine.OpenAL.SoundSource;
 import engine.OpenGL.EnigWindow;
 import engine.OpenGL.VAO;
+import game.structures.Engine;
 import game.structures.Plate;
 import game.structures.Support;
 import game.views.MainView;
@@ -21,9 +22,9 @@ public class Main {
 			String os = System.getProperty("os.name");
 			System.out.println("Operating System: " + os);
 			if (os.contains("mac") || os.contains("Mac")) {
-				System.out.println("in order to get a stack trace, run with\njava -jar 'autotransport.jar' noReRun -XstartOnFirstThread");
+				System.out.println("in order to get a stack trace, run with\njava -jar 'trashseeking.jar' noReRun -XstartOnFirstThread");
 				try {
-					Runtime.getRuntime().exec(new String[]{"java", "-XstartOnFirstThread", "-jar", "'autotransport.jar'", "noReRun"});
+					Runtime.getRuntime().exec(new String[]{"java", "-XstartOnFirstThread", "-jar", "'trashseeking.jar'", "noReRun"});
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -60,5 +61,6 @@ public class Main {
 		Support.loadRes();
 		Plate.loadRes();
 		Trash.loadRes();
+		Engine.loadRes();
 	}
 }

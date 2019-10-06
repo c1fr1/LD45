@@ -17,6 +17,8 @@ public class Plate {
 	private static VAO plateVAO;
 	public static Texture plateTex;
 
+	public int hp = 3;
+
 	public Plate(Player player) {
 		Vector2f position = player.getRotated2DVector(0.0f, -1f, 1.5f).add(player.x, player.z);
 		posX = (int) Math.floor((position.x) / 3f);
@@ -48,7 +50,7 @@ public class Plate {
 		if (!MainView.main.plateCanBeSupported(x, z)) {
 			Shaders.colorShader.setUniform(2, 0, new Vector3f(1f, 0f, 0f));
  		} else {
-			if (player.scrap > 3) {
+			if (player.scrap >= 3) {
 				Shaders.colorShader.setUniform(2, 0, new Vector3f(0f, 1f, 1f));
 			} else {
 				Shaders.colorShader.setUniform(2, 0, new Vector3f(1f, 1f, 0f));

@@ -17,7 +17,7 @@ public class Player extends Camera {
 	public Vector3f velocity = new Vector3f();
 	
 	public Player(EnigWindow window) {
-		super((float) PI * 0.25f, 0.01f, 9e9f, window);
+		super((float) PI * 0.3f, 0.01f, 9e9f, window);
 	}
 	
 	public void updateMovement(EnigWindow window, float timeStep, float height) {
