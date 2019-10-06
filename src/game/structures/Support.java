@@ -54,7 +54,11 @@ public class Support {
 		int dir = player.getDirection();
 		Support s = new Support(player);
 		if (MainView.main.supportCanBeSupported(s.fromX, s.fromZ, s.toX, s.toZ)) {
-			Shaders.colorShader.setUniform(2, 0, new Vector3f(0f, 1f, 1f));
+			if (player.scrap > 1) {
+				Shaders.colorShader.setUniform(2, 0, new Vector3f(0f, 1f, 1f));
+			} else {
+				Shaders.colorShader.setUniform(2, 0, new Vector3f(1f, 1f, 0f));
+			}
 		} else {
 			Shaders.colorShader.setUniform(2, 0, new Vector3f(1f, 0f, 0f));
 		}

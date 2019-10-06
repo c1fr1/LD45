@@ -59,5 +59,6 @@ public class Main {
 		screenObj = new VAO(-1, -1, 2, 2);
 		Support.loadRes();
 		Plate.loadRes();
+		Trash.loadRes();
 	}
 }

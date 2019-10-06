@@ -4,7 +4,6 @@ import engine.Entities.Camera;
 import engine.OpenGL.EnigWindow;
 import engine.Platform.Ray3f;
 import game.UserControls;
-import game.views.MainView;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -12,6 +11,9 @@ import org.joml.Vector3f;
 import static java.lang.Math.PI;
 
 public class Player extends Camera {
+
+	public int scrap = 0;
+
 	public Vector3f velocity = new Vector3f();
 	
 	public Player(EnigWindow window) {
@@ -47,8 +49,8 @@ public class Player extends Camera {
 			z += movement.y;
 		}
 		add(velocity.mul(timeStep, new Vector3f()));
-		velocity.y -= 0.3f;
-		if (y <= height && height - y < -(velocity.y + 0.2f) * timeStep) {
+		velocity.y -= 20f * timeStep;
+		if (y <= height && height - y < 1) {
 			y = height;
 			velocity.y = 0;
 		}

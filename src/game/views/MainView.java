@@ -3,6 +3,7 @@ package game.views;
 import engine.*;
 import engine.OpenGL.*;
 import game.Shaders;
+import game.Trash;
 import game.UserControls;
 import game.entities.Player;
 import game.structures.Plate;
@@ -22,12 +23,19 @@ public class MainView extends EnigView {
 	public float totalTime;
 
 	private VAO islandVAO;
+	private VAO scrapBar;
 
-	private boolean isBuilding = true;
+	private boolean isBuilding = false;
 	private int buildingStruct = 0;
+	private float timeTillNextTrash = 0;
+	private float buildingSize = 5;
+
+	private Texture islandTex;
 
 	private ArrayList<Support> supports = new ArrayList<>();
 	private ArrayList<Plate> plates = new ArrayList<>();
+
+	private ArrayList<Trash> trash = new ArrayList<>();
 
 	private game.entities.Player player;
 
@@ -35,11 +43,20 @@ public class MainView extends EnigView {
 		super(window);
 		glDisable(GL_CULL_FACE);
 		islandVAO = new VAO("res/objects/island.obj");
+		scrapBar = new VAO(0, 0, 100, 10);
+
+		islandTex = new Texture("res/textures/island.png");
 		player = new Player(window);
 	}
 	
 	public void reset() {
-
+		player.x = 0;
+		player.y = 0;
+		player.z = 0;
+		supports.clear();
+		plates.clear();
+		trash.clear();
+		isBuilding = false;
 	}
 	
 	public boolean loop() {
@@ -59,6 +76,12 @@ public class MainView extends EnigView {
 		player.updateRotation(window, deltaTime);
 		player.updateMovement(window, deltaTime, getHeight(player.x, player.z));
 
+		manageBuilding();
+		manageTrash();
+	}
+
+	public void manageBuilding() {
+
 		if (UserControls.build(window)) {
 			isBuilding = !isBuilding;
 		}
@@ -75,9 +98,36 @@ public class MainView extends EnigView {
 
 		if (window.keys[GLFW_KEY_0] ==1) {
 			buildingStruct = 0;
+			isBuilding = true;
 		}
 		if (window.keys[GLFW_KEY_1] == 1) {
 			buildingStruct = 1;
+			isBuilding = true;
+		}
+		if (player.y < -50) {
+			reset();
+		}
+	}
+
+	public void manageTrash() {
+		if (timeTillNextTrash < 0) {
+			timeTillNextTrash = 0.5f + (float) Math.random() * 2f;
+			trash.add(new Trash(new Vector3f(), buildingSize + 2));
+		} else {
+			timeTillNextTrash -= deltaTime;
+		}
+
+		for (int i = 0; i < trash.size(); ++i) {
+			Trash t = trash.get(i);
+			t.updatePosition(deltaTime);
+			if (t.y < -30) {
+				trash.remove(i);
+				--i;
+			} else if (t.distanceSquared(player) < 1) {
+				player.scrap += Math.random() * 2 + 1;
+				trash.remove(i);
+				--i;
+			}
 		}
 	}
 	
@@ -86,13 +136,15 @@ public class MainView extends EnigView {
 		renderIsland();
 		renderPreviews();
 		renderStructures();
+		Trash.renderSet(player, trash);
 	}
 
 	public void renderIsland() {
-		Shaders.colorShader.enable();
-		Shaders.colorShader.setUniform(0, 0, player.getCameraMatrix());
-		Shaders.colorShader.setUniform(2, 0, new Vector3f(0.5f, 0.5f, 0.5f));
+		Shaders.textureShader.enable();
+		Shaders.textureShader.setUniform(0, 0, player.getCameraMatrix());
+		islandTex.bind();
 		islandVAO.fullRender();
+		Shaders.colorShader.enable();
 	}
 
 	public void renderStructures() {
@@ -119,17 +171,25 @@ public class MainView extends EnigView {
 	}
 
 	public void addSupport() {
-		Support s = new Support(player);
-		if (!barExists(s.fromX, s.fromZ, s.toX, s.toZ)) {
-			supports.add(s);
+		if (player.scrap > 1) {
+			Support s = new Support(player);
+			if (!barExists(s.fromX, s.fromZ, s.toX, s.toZ)) {
+				if (supportCanBeSupported(s.fromX, s.fromZ, s.toX, s.toZ)) {
+					supports.add(s);
+					--player.scrap;
+				}
+			}
 		}
 	}
 
 	public void addPlate() {
-		Plate plate = new Plate(player);
-		if (!plateExists(plate.posX, plate.posZ)) {
-			if (plateCanBeSupported(plate.posX, plate.posZ)) {
-				plates.add(plate);
+		if (player.scrap > 3) {
+			Plate plate = new Plate(player);
+			if (!plateExists(plate.posX, plate.posZ)) {
+				if (plateCanBeSupported(plate.posX, plate.posZ)) {
+					plates.add(plate);
+					player.scrap -= 3;
+				}
 			}
 		}
 	}
@@ -260,7 +320,7 @@ public class MainView extends EnigView {
 			ret = 0;
 		}
 
-		if (plateExists((int) Math.floor((player.x) / 3f), (int) Math.floor((player.z) / 3f))) {
+		if (plateExists((int) Math.floor((x) / 3f), (int) Math.floor((z) / 3f))) {
 			if (ret < -0.2f) {
 				ret = -0.2f;
 			}

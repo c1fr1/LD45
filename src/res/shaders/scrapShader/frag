@@ -1,0 +1,18 @@
+#version 330 core
+
+in vec2 texCoords;
+
+out vec4 color;
+
+uniform sampler2D texSampler;
+uniform float numScraps;
+
+void main() {
+    color = vec4(0, 0, 0, 0);
+    if (texCoords.x < numScraps) {
+        color = vec4(0, 1, 0, 1);
+    }
+    if (texCoords.x < 0.1) {
+        color = texture(vec2(texCoords.x * 10, texCoords.y), texCoords);
+    }
+}
